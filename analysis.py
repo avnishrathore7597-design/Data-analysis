@@ -1,52 +1,62 @@
 import pandas as pd
 import matplotlib.pyplot as plt
+import seaborn as sns
 
-# Load dataset
-df = pd.read_csv("iris.csv")
+# Load CSV File
+df = pd.read_csv("sales_data.csv")
 
-# Display first 5 rows
-print("First 5 Rows:")
-print(df.head())
+# Display Dataset
+print("\nDataset:\n")
+print(df)
 
-# Average of selected column
-avg_sepal_length = df["sepal_length"].mean()
-print("\nAverage Sepal Length:", avg_sepal_length)
+# Dataset Information
+print("\nDataset Information:")
+print(df.info())
 
-# Basic statistics
-print("\nDataset Statistics:")
+# Statistical Summary
+print("\nStatistical Summary:")
 print(df.describe())
 
+# Average Sales and Profit
+avg_sales = df["Sales"].mean()
+avg_profit = df["Profit"].mean()
+
+print(f"\nAverage Sales: {avg_sales:.2f}")
+print(f"Average Profit: {avg_profit:.2f}")
+
+# -----------------------------
 # Bar Chart
-species_count = df["species"].value_counts()
-
-plt.figure(figsize=(6,4))
-species_count.plot(kind="bar")
-plt.title("Species Count")
-plt.xlabel("Species")
-plt.ylabel("Count")
+# -----------------------------
+plt.figure(figsize=(8, 5))
+plt.bar(df["Month"], df["Sales"])
+plt.title("Monthly Sales")
+plt.xlabel("Month")
+plt.ylabel("Sales")
 plt.show()
 
+# -----------------------------
 # Scatter Plot
-plt.figure(figsize=(6,4))
-plt.scatter(df["sepal_length"], df["petal_length"])
-plt.title("Sepal Length vs Petal Length")
-plt.xlabel("Sepal Length")
-plt.ylabel("Petal Length")
+# -----------------------------
+plt.figure(figsize=(8, 5))
+plt.scatter(df["Sales"], df["Profit"])
+plt.title("Sales vs Profit")
+plt.xlabel("Sales")
+plt.ylabel("Profit")
 plt.show()
 
+# -----------------------------
 # Heatmap
-correlation = df.select_dtypes(include='number').corr()
-
-plt.figure(figsize=(6,4))
-plt.imshow(correlation, cmap="coolwarm")
-plt.colorbar()
-
-plt.xticks(range(len(correlation.columns)),
-           correlation.columns,
-           rotation=45)
-
-plt.yticks(range(len(correlation.columns)),
-           correlation.columns)
-
+# -----------------------------
+plt.figure(figsize=(6, 4))
+sns.heatmap(
+    df[["Sales", "Profit"]].corr(),
+    annot=True
+)
 plt.title("Correlation Heatmap")
 plt.show()
+
+# Insights
+print("\nInsights:")
+print("- Sales show an increasing trend over the months.")
+print("- Profit increases as sales increase.")
+print("- Sales and Profit have a positive correlation.")
